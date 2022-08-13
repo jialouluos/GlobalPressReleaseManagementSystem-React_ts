@@ -1,25 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { lazyLoad } from './routers/router';
+import { Provider } from 'react-redux';
+import { store, persistor } from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react'
+import "./App.css"
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return (<Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <div className="App">
+        <Routes>
+          <Route path="/login" element={lazyLoad(React.lazy(() => import('./pages/Login')))} />
+          <Route path="/sandbox//*" element={lazyLoad(React.lazy(() => import('./pages/SandBox')))} />
+          <Route path="/" element={
+            sessionStorage.getItem("menu") ?
+              <Navigate to="/sandbox//*" /> :
+              <Navigate to="/login" />
+          } />
+          <Route path="*" element={lazyLoad(React.lazy(() => import('./pages/SandBox/NoPermission')))} />
+        </Routes>
+      </div>
+    </PersistGate>
+
+  </Provider>
+
   );
 }
 

@@ -1,0 +1,16 @@
+.login_form {
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 50%;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .title {
+        font-size: 30px;
+        text-align: center;
+        color: aquamarine;
+        margin-bottom: 20px;
+    }
+}
